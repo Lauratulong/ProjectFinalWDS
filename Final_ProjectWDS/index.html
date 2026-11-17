@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LaundryKu - Sistem Manajemen Laundry">
+    <title>BobasoLaundry | Sistem Manajemen Laundry</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-mark">L</div>
+                <div>
+                    <h2>BobasoLaundry</h2><small>Management System</small>
+                </div>
+            </div>
+            <div>
+                <div class="nav-label">MENU UTAMA</div>
+                <nav class="nav-list">
+                    <a href="#" data-page="dashboard"><span class="nav-icon">▦</span>Dashboard</a>
+                    <a href="#" data-page="orders"><span class="nav-icon">▤</span>Manajemen Pesanan</a>
+                    <a href="#" data-page="customers"><span class="nav-icon">♙</span>Data Pelanggan</a>
+                    <a href="#" data-page="reports"><span class="nav-icon">▥</span>Laporan</a>
+                </nav>
+            </div>
+            <div class="sidebar-note"><strong>Tips BobasoLaundry</strong><br>Perbarui status pesanan secara berkala agar
+                pelanggan mendapatkan informasi yang tepat.</div>
+        </aside>
+        <div class="main">
+            <header class="topbar">
+                <div style="display:flex;align-items:center"><button class="mobile-menu"
+                        aria-label="Buka menu">☰</button>
+                    <div>
+                        <div class="eyebrow">LAUNDRY MANAGEMENT SYSTEM</div>
+                        <h1 id="top-title">Dashboard</h1>
+                    </div>
+                </div>
+                <div class="user">
+                    <div class="avatar">A</div><span>Admin Laundry</span>
+                </div>
+            </header>
+            <main class="content">
+                <section class="view" data-view="dashboard">
+                    <div class="page-intro">
+                        <div>
+                            <h2>Selamat datang, Admin! 👋</h2>
+                            <p>Berikut ringkasan aktivitas operasional laundry hari ini.</p>
+                        </div><button class="btn btn-primary" onclick="showView('orders');openOrderModal()">＋ Buat
+                            Pesanan</button>
+                    </div>
+                    <section aria-label="Ringkasan statistik" class="stats">
+                        <article class="stat-card">
+                            <div class="stat-top"><span>Total Pesanan</span><span class="stat-icon">▤</span></div>
+                            <div class="stat-value" id="stat-orders">0</div>
+                            <div class="stat-foot">Seluruh pesanan tersimpan</div>
+                        </article>
+                        <article class="stat-card">
+                            <div class="stat-top"><span>Sedang Diproses</span><span class="stat-icon">◷</span></div>
+                            <div class="stat-value" id="stat-process">0</div>
+                            <div class="stat-foot">Pesanan dalam pengerjaan</div>
+                        </article>
+                        <article class="stat-card">
+                            <div class="stat-top"><span>Pesanan Selesai</span><span class="stat-icon">✓</span></div>
+                            <div class="stat-value" id="stat-done">0</div>
+                            <div class="stat-foot">Siap diambil pelanggan</div>
+                        </article>
+                        <article class="stat-card">
+                            <div class="stat-top"><span>Pendapatan Lunas</span><span class="stat-icon">Rp</span></div>
+                            <div class="stat-value" id="stat-revenue">Rp0</div>
+                            <div class="stat-foot">Dari transaksi yang lunas</div>
+                        </article>
+                    </section>
+                    <section class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <h3>Pesanan Terbaru</h3>
+                                <p>Pantau pesanan laundry yang baru dicatat.</p>
+                            </div><button class="btn btn-light" onclick="showView('orders')">Lihat Semua →</button>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID Pesanan</th>
+                                        <th>Pelanggan</th>
+                                        <th>Layanan</th>
+                                        <th>Status</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recent-orders"></tbody>
+                            </table>
+                        </div>
+                    </section>
+                    <section class="two-col">
+                        <article class="panel">
+                            <div class="panel-head">
+                                <div>
+                                    <h3>Alur Pelayanan</h3>
+                                    <p>Langkah pengelolaan pesanan laundry.</p>
+                                </div>
+                            </div>
+                            <div class="summary-list">
+                                <div class="summary-row"><span>01 · Pesanan diterima</span><strong>Menunggu</strong>
+                                </div>
+                                <div class="summary-row"><span>02 · Proses pencucian</span><strong>Diproses</strong>
+                                </div>
+                                <div class="summary-row"><span>03 · Siap diambil</span><strong>Selesai</strong></div>
+                            </div>
+                        </article>
+                        <aside class="panel">
+                            <div class="panel-head">
+                                <h3>Informasi Sistem</h3>
+                            </div>
+                            <div class="notice">Data aplikasi disimpan pada <strong>Local Storage</strong> browser ini.
+                                Gunakan browser dan perangkat yang sama agar data tetap tersedia.</div>
+                        </aside>
+                    </section>
+                </section>
+                <section class="view" data-view="orders" hidden>
+                    <div class="page-intro">
+                        <div>
+                            <h2>Manajemen Pesanan</h2>
+                            <p>Catat, cari, ubah, dan pantau status pesanan laundry.</p>
+                        </div><button class="btn btn-primary" onclick="openOrderModal()">＋ Tambah Pesanan</button>
+                    </div>
+                    <section class="table-panel">
+                        <div class="table-tools"><input aria-label="Cari pesanan" class="field search" id="order-search"
+                                placeholder="Cari ID, nama pelanggan, layanan..." type="search" />
+                            <div class="tool-group"><select aria-label="Filter status" class="field" id="status-filter">
+                                    <option value="">Semua Status</option>
+                                    <option>Menunggu</option>
+                                    <option>Diproses</option>
+                                    <option>Selesai</option>
+                                </select></div>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Pelanggan</th>
+                                        <th>Layanan</th>
+                                        <th>Berat</th>
+                                        <th>Total</th>
+                                        <th>Status</th>
+                                        <th>Pembayaran</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="orders-body"></tbody>
+                            </table>
+                        </div>
+                    </section>
+                    <div class="notice" style="margin-top:16px">Total harga dihitung otomatis berdasarkan <strong>berat
+                            (kg) × harga per kg</strong>. Pilih status pengerjaan dan pembayaran sesuai kondisi pesanan.
+                    </div>
+                    <div class="modal-backdrop" id="order-modal">
+                        <section aria-labelledby="modal-title" aria-modal="true" class="modal" role="dialog">
+                            <div class="modal-head">
+                                <h3 id="modal-title">Tambah Pesanan</h3><button aria-label="Tutup" class="close"
+                                    onclick="closeOrderModal()">✕</button>
+                            </div>
+                            <form id="order-form"><input id="order-id" type="hidden" />
+                                <div class="form-grid">
+                                    <div class="form-group"><label for="order-customer">Pelanggan *</label><select
+                                            class="field" id="order-customer" required=""></select></div>
+                                    <div class="form-group"><label for="order-service">Jenis Layanan *</label><select
+                                            class="field" id="order-service" required="">
+                                            <option value="Cuci &amp; Setrika">Cuci &amp; Setrika</option>
+                                            <option value="Cuci Kering">Cuci Kering</option>
+                                            <option value="Setrika">Setrika</option>
+                                            <option value="Laundry Express">Laundry Express</option>
+                                        </select></div>
+                                    <div class="form-group"><label for="order-weight">Berat (kg) *</label><input
+                                            class="field" id="order-weight" min="0.1" placeholder="Contoh: 3.5"
+                                            required="" step="0.1" type="number" /></div>
+                                    <div class="form-group"><label for="order-price">Harga per kg (Rp) *</label><input
+                                            class="field" id="order-price" min="1" required="" step="500" type="number"
+                                            value="7000" /></div>
+                                    <div class="form-group"><label for="order-status">Status Pengerjaan</label><select
+                                            class="field" id="order-status">
+                                            <option>Menunggu</option>
+                                            <option>Diproses</option>
+                                            <option>Selesai</option>
+                                        </select></div>
+                                    <div class="form-group"><label for="order-payment">Status Pembayaran</label><select
+                                            class="field" id="order-payment">
+                                            <option>Belum Lunas</option>
+                                            <option>Lunas</option>
+                                        </select></div>
+                                    <div class="form-group"><label for="order-date">Tanggal Masuk *</label><input
+                                            class="field" id="order-date" required="" type="date" /></div>
+                                    <div class="form-group"><label for="order-note">Catatan</label><input class="field"
+                                            id="order-note" placeholder="Catatan tambahan (opsional)" /></div>
+                                </div>
+                                <div class="form-actions"><button class="btn btn-light" onclick="closeOrderModal()"
+                                        type="button">Batal</button><button class="btn btn-primary" type="submit">Simpan
+                                        Pesanan</button></div>
+                            </form>
+                        </section>
+                    </div>
+                </section>
+                <section class="view" data-view="customers" hidden>
+                    <div class="page-intro">
+                        <div>
+                            <h2>Data Pelanggan</h2>
+                            <p>Kelola informasi pelanggan laundry dengan mudah.</p>
+                        </div><button class="btn btn-primary" onclick="openCustomerModal()">＋ Tambah Pelanggan</button>
+                    </div>
+                    <section class="table-panel">
+                        <div class="table-tools"><input aria-label="Cari pelanggan" class="field search"
+                                id="customer-search" placeholder="Cari nama, nomor telepon, alamat..." type="search" />
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Nama Pelanggan</th>
+                                        <th>Nomor Telepon</th>
+                                        <th>Alamat</th>
+                                        <th>Riwayat</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="customers-body"></tbody>
+                            </table>
+                        </div>
+                    </section>
+                    <div class="modal-backdrop" id="customer-modal">
+                        <section aria-labelledby="customer-modal-title" aria-modal="true" class="modal" role="dialog">
+                            <div class="modal-head">
+                                <h3 id="customer-modal-title">Tambah Pelanggan</h3><button aria-label="Tutup"
+                                    class="close" onclick="closeCustomerModal()">✕</button>
+                            </div>
+                            <form id="customer-form"><input id="customer-id" type="hidden" />
+                                <div class="form-grid">
+                                    <div class="form-group full"><label for="customer-name">Nama Lengkap *</label><input
+                                            class="field" id="customer-name" maxlength="60" minlength="2"
+                                            placeholder="Nama pelanggan" required="" /></div>
+                                    <div class="form-group"><label for="customer-phone">Nomor Telepon *</label><input
+                                            class="field" id="customer-phone" maxlength="15" minlength="8"
+                                            placeholder="08xxxxxxxxxx" required="" type="tel" /></div>
+                                    <div class="form-group"><label for="customer-address">Alamat *</label><input
+                                            class="field" id="customer-address" minlength="3"
+                                            placeholder="Alamat pelanggan" required="" /></div>
+                                </div>
+                                <div class="form-actions"><button class="btn btn-light" onclick="closeCustomerModal()"
+                                        type="button">Batal</button><button class="btn btn-primary" type="submit">Simpan
+                                        Pelanggan</button></div>
+                            </form>
+                        </section>
+                    </div>
+                </section>
+                <section class="view" data-view="reports" hidden>
+                    <div class="page-intro">
+                        <div>
+                            <h2>Laporan Laundry</h2>
+                            <p>Ringkasan transaksi dan status pembayaran seluruh pesanan.</p>
+                        </div><button class="btn btn-light" onclick="window.print()">⎙ Cetak Laporan</button>
+                    </div>
+                    <section class="stats">
+                        <article class="stat-card">
+                            <div class="stat-top"><span>Nilai Seluruh Pesanan</span><span class="stat-icon">Rp</span>
+                            </div>
+                            <div class="stat-value" id="report-total">Rp0</div>
+                            <div class="stat-foot">Akumulasi nilai pesanan</div>
+                        </article>
+                        <article class="stat-card">
+                            <div class="stat-top"><span>Sudah Dibayar</span><span class="stat-icon">✓</span></div>
+                            <div class="stat-value" id="report-paid">Rp0</div>
+                            <div class="stat-foot">Pesanan berstatus lunas</div>
+                        </article>
+                        <article class="stat-card">
+                            <div class="stat-top"><span>Belum Dibayar</span><span class="stat-icon">◷</span></div>
+                            <div class="stat-value" id="report-unpaid">Rp0</div>
+                            <div class="stat-foot">Perlu ditindaklanjuti</div>
+                        </article>
+                        <article class="stat-card">
+                            <div class="stat-top"><span>Jumlah Transaksi</span><span class="stat-icon">▤</span></div>
+                            <div class="stat-value" id="report-count">0</div>
+                            <div class="stat-foot">Seluruh data pesanan</div>
+                        </article>
+                    </section>
+                    <section class="two-col">
+                        <article class="panel">
+                            <div class="panel-head">
+                                <div>
+                                    <h3>Status Pengerjaan</h3>
+                                    <p>Jumlah pesanan berdasarkan status.</p>
+                                </div>
+                            </div>
+                            <div class="bar-list" id="status-bars"></div>
+                        </article>
+                        <aside class="panel">
+                            <div class="panel-head">
+                                <h3>Catatan Laporan</h3>
+                            </div>
+                            <div class="notice">Laporan dihitung langsung dari data pesanan yang tersimpan. Perubahan
+                                pada halaman Manajemen Pesanan akan otomatis memperbarui ringkasan ini.</div>
+                        </aside>
+                    </section>
+                    <section class="table-panel">
+                        <div class="table-tools"><strong style="font-size:13px">Rincian Transaksi</strong></div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID Pesanan</th>
+                                        <th>Tanggal</th>
+                                        <th>Pelanggan</th>
+                                        <th>Layanan</th>
+                                        <th>Total</th>
+                                        <th>Pembayaran</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="report-body"></tbody>
+                            </table>
+                        </div>
+                    </section>
+                </section>
+            </main>
+            <footer class="footer">© 2026 BobasoLaundry · Sistem Manajemen Laundry sederhana berbasis HTML, CSS &
+                JavaScript.</footer>
+        </div>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+</body>
+
+</html>
